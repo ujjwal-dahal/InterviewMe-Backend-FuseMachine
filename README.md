@@ -13,6 +13,13 @@ The API runs at `http://127.0.0.1:8000`. FastAPI's API reference is at `http://1
 
 The Next.js frontend can call the API from `http://localhost:3000`. CORS is already enabled for that origin.
 
+## Vercel deployment
+
+The local `.env` file is not deployed to Vercel. In the Vercel project settings, add
+`GROQ_API_KEY` under **Settings > Environment Variables** for the **Production**
+environment, then redeploy the `master` branch. Keep `GROQ_MODEL` set to
+`openai/gpt-oss-20b` unless you intentionally choose another Groq-supported model.
+
 ## API contract
 
 ### POST `/resume/analyze`

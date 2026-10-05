@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from app.schemas.roadmap import InterviewType, RoadmapResult
@@ -7,6 +9,7 @@ from app.services.roadmap_generation import generate_roadmap
 
 
 router = APIRouter(prefix="/roadmap", tags=["roadmap"])
+logger = logging.getLogger(__name__)
 
 
 @router.post("/generate", response_model=RoadmapResult)
@@ -24,5 +27,8 @@ async def generate_roadmap_for_resume(
         return generate_roadmap(resume_info, target_role, interview_type)
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
+    except RuntimeError as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error
     except Exception as error:
+        logger.exception("Roadmap generation failed")
         raise HTTPException(status_code=502, detail="Roadmap generation failed.") from error

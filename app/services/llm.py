@@ -6,7 +6,9 @@ from app.config import get_settings
 def get_llm() -> ChatGroq:
     settings = get_settings()
     if not settings.groq_api_key:
-        raise RuntimeError("GROQ_API_KEY is missing. Add it to your .env file.")
+        raise RuntimeError(
+            "GROQ_API_KEY is not configured. Add it to the deployment environment."
+        )
 
     return ChatGroq(
         model=settings.groq_model,
